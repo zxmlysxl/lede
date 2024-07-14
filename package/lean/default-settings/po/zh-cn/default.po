@@ -1,6 +1,3 @@
-msgid "Swap"
-msgstr "虚拟内存"
-
 msgid "Processor"
 msgstr "处理器"
 
@@ -13,11 +10,14 @@ msgstr "CPU 温度"
 msgid "CPU Info"
 msgstr "CPU 信息"
 
+msgid "Compiler author"
+msgstr "编译作者"
+
+msgid "Firmware Update"
+msgstr "固件升级"
+
 msgid "CPU Model"
 msgstr "处理器型号"
-
-msgid "CPU usage"
-msgstr "CPU 使用率"
 
 msgid "CPU frequency"
 msgstr "CPU 频率"
@@ -27,6 +27,9 @@ msgstr "RAM 频率"
 
 msgid "Flash Size"
 msgstr "闪存大小"
+
+msgid "RAM Size"
+msgstr "内存大小"
 
 msgid "Free Memory"
 msgstr "释放内存"
@@ -54,6 +57,9 @@ msgstr "划分给 ZRam 分区的内存大小（MB），推荐留空由系统自�
 
 msgid "Number of parallel threads used for compression"
 msgstr "用于压缩内存数据的CPU并发线程数"
+
+msgid "Swap"
+msgstr "虚拟内存"
 
 msgid "Force 40MHz mode"
 msgstr "强制 40MHz 频宽"
