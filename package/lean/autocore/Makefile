@@ -63,6 +63,8 @@ define Package/autocore-x86/install
 	$(INSTALL_BIN) ./files/60-autocore-reload-rpcd $(1)/etc/uci-defaults/
 	$(INSTALL_DIR) $(1)/sbin
 	$(CP) ./files/x86/sbin/* $(1)/sbin
+	$(INSTALL_DIR) $(1)/www/luci-static/resources/icons/devices
+	$(CP) ./files/x86/icons/devices/* $(1)/www/luci-static/resources/icons/devices
 	$(INSTALL_DIR) $(1)/usr/share/rpcd/acl.d
 	$(CP) ./files/luci-mod-status-autocore.json $(1)/usr/share/rpcd/acl.d/
 endef
