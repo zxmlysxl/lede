@@ -2,15 +2,8 @@
 本源码fork自lean，目的为自用，针对源码的修改不一定满足您的需求
 =
 
-<<<<<<< HEAD
 如何编译自己需要的 OpenWrt 固件
 -
-注意：
--
-1. **不要用root 用户进行编译！！！**
-=======
-为国产龙芯 LOONGSON SoC loongarch64 / 飞腾 Phytium 腾锐 D2000 系列架构添加支持
-
 ## 注意
 
 1. **不要用 root 用户进行编译**
@@ -31,7 +24,6 @@ libmpc-dev libmpfr-dev libncurses5-dev libncursesw5-dev libreadline-dev libssl-d
 mkisofs msmtp nano ninja-build p7zip p7zip-full patch pkgconf python2.7 python3 python3-pip qemu-utils \
 rsync scons squashfs-tools subversion swig texinfo uglifyjs upx-ucl unzip vim wget xmlto xxd zlib1g-dev
 
-<<<<<<< HEAD
 2.1 如果你是安装了Ubuntu 21.10 LTS x64,则运行以下命令
   
    sudo apt-get -y install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev patch python3 python2.7 unzip zlib1g-dev lib32gcc-s1 libc6-dev-i386 subversion flex uglifyjs git gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx-ucl libelf-dev autoconf automake libtool autopoint device-tree-compiler g++-multilib antlr3 gperf wget curl swig rsync ack bison ccache cmake cpio fastjar haveged help2man intltool libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncursesw5-dev libreadline-dev lrzsz mkisofs nano ninja-build pkgconf python3-pip scons squashfs-tools vim xxd
