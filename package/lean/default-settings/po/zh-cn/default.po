@@ -22,6 +22,12 @@ msgstr "CPU 使用率"
 msgid "CPU frequency"
 msgstr "CPU 频率"
 
+msgid "Compiler author"
+msgstr "编译作者"
+
+msgid "Firmware Update"
+msgstr "固件升级"
+
 msgid "RAM frequency"
 msgstr "RAM 频率"
 
