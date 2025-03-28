@@ -30,6 +30,6 @@ echo "$full_str" > compile_date.txt
 
 #开始编译
 make clean
-git pull
+git pull --recurse-submodules
 ./scripts/feeds update -a && ./scripts/feeds install -a
 make download -j8 && make V=s -j$(nproc)
