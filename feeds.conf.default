@@ -1,7 +1,6 @@
 src-git packages https://github.com/zxmlysxl/packages
 src-git luci https://github.com/zxmlysxl/luci
 src-git zuoxm https://github.com/zxmlysxl/zuoxm
-#src-git OAF https://github.com/zxmlysxl/OpenAppFilter
 src-git kenzo https://github.com/zxmlysxl/openwrt-packages
 #src-git kenzosmall https://github.com/zxmlysxl/small-package
 src-git small https://github.com/zxmlysxl/small
