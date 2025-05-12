@@ -12,7 +12,11 @@ KERNELNAME:=Image dtbs
 SUBTARGETS:=generic
 
 KERNEL_PATCHVER:=6.6
+<<<<<<< HEAD
 KERNEL_TESTING_PATCHVER:=5.15
+=======
+KERNEL_TESTING_PATCHVER:=6.12
+>>>>>>> upstream/master
 
 include $(INCLUDE_DIR)/target.mk
 

@@ -10,7 +10,11 @@ FEATURES:=fpu usb pci pcie gpio nand squashfs ramdisk boot-part rootfs-part lega
 SUBTARGETS:=cortexa9 cortexa53 cortexa72
 
 KERNEL_PATCHVER:=6.6
+<<<<<<< HEAD
 KERNEL_TESTING_PATCHVER:=5.15
+=======
+KERNEL_TESTING_PATCHVER:=6.1
+>>>>>>> upstream/master
 
 include $(INCLUDE_DIR)/target.mk
 
