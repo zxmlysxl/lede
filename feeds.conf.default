@@ -1,5 +1,5 @@
-src-git packages https://github.com/coolsnowwolf/packages
+src-git packages https://github.com/zxmlysxl/packages.git
 src-git luci https://github.com/zxmlysxl/luci-2410.git
-src-git routing https://github.com/coolsnowwolf/routing
+src-git routing https://github.com/zxmlysxl/routing
 src-git telephony https://github.com/coolsnowwolf/telephony.git
 src-git zuoxm https://github.com/zxmlysxl/zxm_immortalwrt_packages.git
