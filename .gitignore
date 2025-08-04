@@ -30,3 +30,5 @@ git-src
 .cproject
 .ccache
 .vscode*
+*.log
+compile_date.txt
