@@ -85,20 +85,41 @@ calc_dl_threads() {
     echo $(( $(calc_jobs) > 4 ? 4 : $(calc_jobs) ))  # 下载不超过4线程
 }
 
-# 轻量级动态计时函数（避免内存消耗）
-safe_timer() {
+# 动态计时函数 (需安装pv)
+dynamic_timer() {
     local msg="$1"
     local cmd="$2"
+    
+    # 时间格式化函数（内部使用）
+    format_time() {
+        local total_seconds=$1
+        local minutes=$((total_seconds / 60))
+        local seconds=$((total_seconds % 60))
+        
+        if (( minutes > 0 )); then
+            printf "%d分%02d秒" "$minutes" "$seconds"
+        else
+            printf "%d秒" "$seconds"
+        fi
+    }
+
+    echo -ne "${CYAN}▶ ${msg}...0秒${NC}"
     local start=$(date +%s)
     
-    echo -ne "${CYAN}▶ ${msg}...${NC}"
-    if $cmd &>> "$LOG_FILE"; then
+    # 执行命令（后台运行）
+    (eval "$cmd" &>> "$LOG_FILE") &
+    local pid=$!
+    
+    # 动态计时循环
+    while kill -0 "$pid" 2>/dev/null; do
         local elapsed=$(( $(date +%s) - start ))
-        echo -e "\r${GREEN}✓ ${msg}完成 (${elapsed}秒)${NC} "
-    else
-        echo -e "\r${RED}❌ ${msg}失败！查看日志: $LOG_FILE${NC}"
-        exit 1
-    fi
+        echo -ne "\r${CYAN}▶ ${msg}...$(format_time $elapsed)${NC}"
+        sleep 1
+    done
+    
+    wait "$pid"  # 等待命令完成
+    local elapsed=$(( $(date +%s) - start ))
+    echo -e "\r${GREEN}✓ ${msg}完成 ($(format_time $elapsed))${NC} "
 }
 
 # 检查git更新（带倒计时自动确认）
@@ -120,38 +141,30 @@ check_git_updates() {
             echo
             read -p "确认更新? [Y/n] " -n 1 -r
             echo
-            [[ ! $REPLY =~ ^[Nn]$ ]] && safe_timer "拉取代码" "git pull"
+            [[ ! $REPLY =~ ^[Nn]$ ]] && dynamic_timer "拉取代码" "git pull"
         else
             echo -e "\n${GREEN}▶ 自动执行更新...${NC}"
-            safe_timer "拉取代码" "git pull"
+            dynamic_timer "拉取代码" "git pull"
         fi
     fi
 }
 
-# 内存安全的编译流程
-safe_compile() {
+# 公共编译流程
+common_compile() {
+    dynamic_timer "更新 feeds" "./scripts/feeds update -a"
+    dynamic_timer "安装 feeds" "./scripts/feeds install -a"
+    dynamic_timer "下载源码" "make download -j$DL_THREADS"
+    
     local jobs=$(calc_jobs)
-    local dl_threads=$(calc_dl_threads)
+    echo -e "${CYAN}▶ 开始编译 (使用 $jobs 线程)...${NC}"
+    echo -e "📝 日志实时输出到: ${YELLOW}$LOG_FILE${NC}"
     
-    echo -e "${CYAN}▶ 安全编译参数 (8GB内存优化):${NC}"
-    echo -e "编译线程: ${jobs} | 下载线程: ${dl_threads}"
-    
-    safe_timer "更新 feeds" "./scripts/feeds update -a"
-    safe_timer "安装 feeds" "./scripts/feeds install -a"
-    safe_timer "下载源码" "make download -j${dl_threads}"
-    
-    echo -e "${CYAN}▶ 开始编译 (日志: $LOG_FILE)...${NC}"
-    local start=$(date +%s)
-    
-    # 限制内存使用的编译命令
-    if ! make -j${jobs} V=s 2>&1 | tee -a "$LOG_FILE"; then
-        echo -e "${RED}❌ 编译失败! 建议尝试以下操作:${NC}"
-        echo -e "1. 单线程重试: make -j1 V=s"
-        echo -e "2. 检查日志: grep -A10 'error' $LOG_FILE"
+    local compile_start=$(date +%s)
+    if ! make -j$jobs V=s 2>&1 | tee -a "$LOG_FILE"; then
+        echo -e "${RED}❌ 编译失败! (总耗时: $(($(date +%s)-compile_start))秒)${NC}"
         exit 1
     fi
-    
-    echo -e "${GREEN}✓ 编译成功! (耗时: $(($(date +%s)-start))秒${NC}"
+    echo -e "${GREEN}✓ 编译成功! (总耗时: $(($(date +%s)-compile_start))秒)${NC}"
 }
 
 # 完整编译（内存优化版）
@@ -160,9 +173,9 @@ full_compile() {
     check_git_updates
     
     echo -e "${YELLOW}♻️ 轻量级清理...${NC}"
-    safe_timer "make clean" "make clean"  # 不执行dirclean节省内存
+    dynamic_timer "make clean" "make clean"  # 不执行dirclean节省内存
     
-    safe_compile
+    common_compile
     echo -e "\n${GREEN}✅ 完整编译完成!${NC}"
     echo -e "${BLUE}ℹ️ 内存使用报告:${NC}"
     free -h
@@ -172,7 +185,7 @@ full_compile() {
 quick_compile() {
     echo -e "\n${YELLOW}⚡ 执行增量编译 (跳过清理)...${NC}"
     check_git_updates
-    safe_compile
+    common_compile
     echo -e "\n${GREEN}✅ 增量编译完成!${NC}"
 }
 
